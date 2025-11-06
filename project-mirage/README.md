@@ -1,4 +1,4 @@
-# Project Mirage 🌟
+# Project Mirage 
 
 **Cross-OS Distributed Window Interaction System**
 
@@ -8,11 +8,11 @@ Project Mirage enables seamless interaction with application windows across two 
 
 ### Key Features
 
-- 🖱️ **Shared Mouse Control**: Move your cursor seamlessly between devices
-- 🪟 **Live Window Streaming**: Mirror and interact with windows across devices
-- ⌨️ **Independent Keyboards**: Each device maintains its own keyboard
-- 🔒 **Secure Communication**: Encrypted TLS/DTLS channels
-- ⚡ **Low Latency**: Hardware-accelerated encoding/decoding, <50ms end-to-end
+-  **Shared Mouse Control**: Move your cursor seamlessly between devices
+-  **Live Window Streaming**: Mirror and interact with windows across devices
+-  **Independent Keyboards**: Each device maintains its own keyboard
+-  **Secure Communication**: Encrypted TLS/DTLS channels
+-  **Low Latency**: Hardware-accelerated encoding/decoding, <50ms end-to-end
 
 ## Architecture
 
@@ -185,6 +185,6 @@ Built with inspiration from:
 
 ---
 
-**Status**: 🚧 Active Development - Phase 0.1
+**Status**:  Active Development - Phase 0.1
 
 *Built with ❤️ for seamless multi-device workflows*
