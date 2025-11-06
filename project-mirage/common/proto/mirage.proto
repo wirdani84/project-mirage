@@ -1,0 +1,287 @@
+syntax = "proto3";
+
+package mirage.protocol;
+
+// ============================================================================
+// Discovery & Pairing Protocol
+// ============================================================================
+
+// Advertised by nodes during mDNS discovery
+message NodeAdvertisement {
+  string node_id = 1;           // Unique identifier (UUID)
+  string node_name = 2;          // Human-readable name
+  string os_type = 3;            // "linux" or "windows"
+  
+  message DisplayInfo {
+    uint32 width = 1;
+    uint32 height = 2;
+    uint32 scale_factor = 3;     // DPI scaling (100, 150, 200, etc.)
+    uint32 refresh_rate = 4;     // Hz
+  }
+  repeated DisplayInfo displays = 4;
+  
+  message Capabilities {
+    bool can_host_mouse = 1;
+    bool can_capture_windows = 2;
+    bool can_render_streams = 3;
+    repeated string video_codecs = 4;  // "h264", "h265", "av1"
+    repeated string audio_codecs = 5;  // future
+  }
+  Capabilities capabilities = 5;
+  
+  string ip_address = 6;
+  uint32 control_port = 7;
+  uint64 timestamp_ms = 8;
+}
+
+// Pairing handshake
+message PairingRequest {
+  string initiator_node_id = 1;
+  string initiator_name = 2;
+  bytes public_key = 3;          // For TLS mutual auth
+  string pairing_code = 4;       // 6-digit code for user verification
+  uint64 timestamp_ms = 5;
+}
+
+message PairingResponse {
+  enum Status {
+    ACCEPTED = 0;
+    REJECTED = 1;
+    TIMEOUT = 2;
+  }
+  Status status = 1;
+  string responder_node_id = 2;
+  bytes public_key = 3;
+  string session_token = 4;      // JWT or similar
+  uint64 expiry_timestamp_ms = 5;
+}
+
+// ============================================================================
+// Input Coordination Protocol
+// ============================================================================
+
+message MouseEvent {
+  enum Type {
+    MOVE = 0;
+    BUTTON_DOWN = 1;
+    BUTTON_UP = 2;
+    WHEEL = 3;
+  }
+  Type type = 1;
+  
+  // Coordinates (relative to current display)
+  float x = 2;
+  float y = 3;
+  
+  // For movement: delta values
+  float delta_x = 4;
+  float delta_y = 5;
+  
+  // For buttons
+  enum Button {
+    LEFT = 0;
+    RIGHT = 1;
+    MIDDLE = 2;
+    BACK = 3;
+    FORWARD = 4;
+  }
+  Button button = 6;
+  
+  // For wheel
+  float wheel_delta = 7;
+  bool horizontal = 8;  // true for horizontal scroll
+  
+  uint64 timestamp_us = 9;
+  uint32 sequence = 10;  // For ordering and deduplication
+}
+
+message KeyboardEvent {
+  enum Type {
+    KEY_DOWN = 0;
+    KEY_UP = 1;
+  }
+  Type type = 1;
+  
+  uint32 key_code = 2;      // Platform-specific scancode
+  uint32 virtual_key = 3;   // Cross-platform virtual key
+  string character = 4;     // UTF-8 character (for text input)
+  
+  message Modifiers {
+    bool ctrl = 1;
+    bool shift = 2;
+    bool alt = 3;
+    bool meta = 4;  // Windows key / Command key
+  }
+  Modifiers modifiers = 5;
+  
+  uint64 timestamp_us = 6;
+  uint32 sequence = 7;
+}
+
+message InputBatch {
+  repeated MouseEvent mouse_events = 1;
+  repeated KeyboardEvent keyboard_events = 2;
+}
+
+// ============================================================================
+// Window Streaming Protocol
+// ============================================================================
+
+message StreamRequest {
+  enum Type {
+    START = 0;
+    STOP = 1;
+    PAUSE = 2;
+    RESUME = 3;
+  }
+  Type type = 1;
+  
+  string window_id = 2;         // Platform-specific window handle
+  string stream_id = 3;         // Unique stream identifier
+  string target_node_id = 4;    // Peer to receive stream
+  
+  message StreamParams {
+    uint32 width = 1;
+    uint32 height = 2;
+    uint32 max_fps = 3;
+    string codec = 4;            // "h264", "h265", "av1"
+    uint32 bitrate_kbps = 5;
+    bool hardware_encode = 6;
+  }
+  StreamParams params = 5;
+}
+
+message StreamResponse {
+  enum Status {
+    READY = 0;
+    FAILED = 1;
+    NOT_SUPPORTED = 2;
+  }
+  Status status = 1;
+  
+  string stream_id = 2;
+  string error_message = 3;
+  
+  // WebRTC session description
+  string sdp_offer = 4;
+  string sdp_answer = 5;
+  repeated string ice_candidates = 6;
+}
+
+message WindowMetadata {
+  string window_id = 1;
+  string title = 2;
+  string app_name = 3;
+  bytes icon = 4;  // PNG data
+  
+  message Geometry {
+    int32 x = 1;
+    int32 y = 2;
+    uint32 width = 3;
+    uint32 height = 4;
+  }
+  Geometry geometry = 5;
+  
+  bool is_focused = 6;
+  bool is_minimized = 7;
+  bool is_fullscreen = 8;
+}
+
+message StreamStats {
+  string stream_id = 1;
+  
+  uint32 fps = 2;
+  uint32 bitrate_kbps = 3;
+  float encode_latency_ms = 4;
+  float network_latency_ms = 5;
+  float decode_latency_ms = 6;
+  float total_latency_ms = 7;
+  
+  uint64 frames_encoded = 8;
+  uint64 frames_dropped = 9;
+  uint64 bytes_sent = 10;
+  
+  uint64 timestamp_ms = 11;
+}
+
+// ============================================================================
+// Session Management Protocol
+// ============================================================================
+
+message SessionControl {
+  enum Command {
+    HEARTBEAT = 0;
+    CONFIGURE_LAYOUT = 1;
+    TRANSFER_MOUSE = 2;
+    DISCONNECT = 3;
+  }
+  Command command = 1;
+  
+  message Layout {
+    message Display {
+      string node_id = 1;
+      int32 x = 2;          // Position in virtual coordinate space
+      int32 y = 3;
+      uint32 width = 4;
+      uint32 height = 5;
+      bool is_primary = 6;  // Which display "owns" the mouse
+    }
+    repeated Display displays = 1;
+  }
+  Layout layout = 2;
+  
+  message MouseTransfer {
+    string from_node_id = 1;
+    string to_node_id = 2;
+    float entry_x = 3;       // Coordinates where cursor enters
+    float entry_y = 4;
+  }
+  MouseTransfer mouse_transfer = 3;
+  
+  uint64 timestamp_ms = 4;
+}
+
+// ============================================================================
+// Error Handling
+// ============================================================================
+
+message ErrorReport {
+  enum Code {
+    UNKNOWN = 0;
+    NETWORK_ERROR = 1;
+    ENCODING_ERROR = 2;
+    DECODING_ERROR = 3;
+    PERMISSION_DENIED = 4;
+    RESOURCE_EXHAUSTED = 5;
+    INVALID_STATE = 6;
+  }
+  Code code = 1;
+  string message = 2;
+  string component = 3;  // Which subsystem generated the error
+  uint64 timestamp_ms = 4;
+}
+
+// ============================================================================
+// Top-level message wrapper for control channel
+// ============================================================================
+
+message ControlMessage {
+  string session_id = 1;
+  uint32 sequence = 2;
+  
+  oneof payload {
+    NodeAdvertisement advertisement = 10;
+    PairingRequest pairing_request = 11;
+    PairingResponse pairing_response = 12;
+    
+    StreamRequest stream_request = 20;
+    StreamResponse stream_response = 21;
+    WindowMetadata window_metadata = 22;
+    StreamStats stream_stats = 23;
+    
+    SessionControl session_control = 30;
+    InputBatch input_batch = 31;
+    
+    ErrorReport error = 99;
+  }
+}

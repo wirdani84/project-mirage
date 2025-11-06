@@ -1,0 +1,22 @@
+# Project Mirage - Windows Peer Dependencies
+
+# Core networking
+aioquic>=0.9.21  # QUIC protocol support
+aiohttp>=3.9.0   # HTTP client/server
+
+# mDNS discovery
+zeroconf>=0.131.0  # mDNS service discovery
+
+# Video streaming (Phase 0.2+)
+opencv-python>=4.8.0  # Video processing
+numpy>=1.24.0         # Numerical operations
+
+# Windows-specific (only installed on Windows)
+pywin32>=306; platform_system=="Windows"  # Windows API access
+pynput>=1.7.6; platform_system=="Windows" # Input control
+
+# Protocol buffers
+protobuf>=4.25.0
+
+# Utilities
+python-dotenv>=1.0.0
