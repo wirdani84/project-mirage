@@ -362,10 +362,10 @@ Project Mirage is a cross-OS distributed window interaction system enabling seam
 
 Project Mirage has a solid foundation with well-designed architecture and protocols. Phase 0.1 is progressing well with core components in place. The main challenges ahead are WebRTC integration and hardware-accelerated video encoding. With continued focused development, the project is on track for a v1.0 release within 6-12 months.
 
-**Overall Project Health:** 🟢 Good  
-**Timeline Adherence:** 🟢 On Track  
-**Technical Debt:** 🟢 Low  
-**Community Interest:** 🟡 Building
+**Overall Project Health:** Good  
+**Timeline Adherence:** On Track  
+**Technical Debt:** Low  
+**Community Interest:** Building
 
 ---
 
