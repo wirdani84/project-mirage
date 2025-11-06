@@ -6,7 +6,7 @@
 
 ---
 
-## 🎉 What We've Built
+##  What We've Built
 
 Project Mirage is now a **real, working foundation** for a cross-OS distributed window interaction system. While the full vision includes advanced features like window streaming, we have successfully implemented the core architecture and Phase 0.1 components.
 
@@ -119,7 +119,7 @@ Total: 20+ files, ~3000+ lines of code
 
 ---
 
-## 🚀 What Works Right Now
+##  What Works Right Now
 
 ### 1. Demo Script
 ```bash
@@ -228,7 +228,7 @@ use uinput::*;
 
 ---
 
-## 🎯 Key Technical Decisions
+##  Key Technical Decisions
 
 ### Why Rust for Linux Host?
 - Performance: Low latency critical for input
@@ -316,7 +316,7 @@ All I/O operations are asynchronous:
 
 ---
 
-## 🐛 Known Limitations
+##  Known Limitations
 
 ### Current (Phase 0.1)
 1. ❌ No actual network communication yet
@@ -386,7 +386,7 @@ If you want to understand or extend the code:
 
 ---
 
-## 🎉 Success Metrics
+## Success Metrics
 
 ### Phase 0.1 is Complete When:
 - [ ] Mouse moves between screens smoothly
@@ -404,7 +404,7 @@ If you want to understand or extend the code:
 
 ---
 
-## 🌟 Vision for the Future
+## Vision for the Future
 
 ### Phase 0.6+ Features
 - **Clipboard Sync** - Copy on one device, paste on another
@@ -423,7 +423,7 @@ If you want to understand or extend the code:
 
 ---
 
-## 📝 Final Notes
+## Final Notes
 
 ### What Makes This Special
 
@@ -437,7 +437,7 @@ Project Mirage is **not just another screen sharing tool**. It's:
 
 ### Project Health
 
-**Overall: 🟢 Excellent**
+**Overall: Excellent**
 
 - ✅ Strong foundation
 - ✅ Clear roadmap
@@ -456,7 +456,7 @@ Project Mirage is **not just another screen sharing tool**. It's:
 
 ---
 
-## 🚀 Get Started Now!
+## Get Started Now!
 
 ```bash
 # Quick start
