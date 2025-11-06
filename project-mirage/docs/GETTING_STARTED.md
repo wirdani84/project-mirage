@@ -19,10 +19,10 @@ Welcome to Project Mirage! This guide will help you get up and running quickly.
 
 Project Mirage enables you to:
 
-- 🖱️ Share mouse control between Linux and Windows laptops
-- 🪟 Drag application windows between devices (Phase 0.2+)
-- ⌨️ Use each device's keyboard independently
-- 🔒 All communication is encrypted
+- Share mouse control between Linux and Windows laptops
+- Drag application windows between devices (Phase 0.2+)
+- Use each device's keyboard independently
+- All communication is encrypted
 
 **Current Status:** Phase 0.1 (Mouse Sharing)
 
@@ -179,14 +179,14 @@ cargo run --release -- --discover --verbose
 
 You should see:
 ```
-🌟 Project Mirage - Linux Host Daemon v0.1.0
+Project Mirage - Linux Host Daemon v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Configuration loaded
 ✓ Node name: your-hostname
 ✓ Input manager ready
 ✓ Session manager ready
 ✓ Discovery service started
-🔍 Scanning for peer devices on local network...
+ Scanning for peer devices on local network...
 ```
 
 #### On Windows Peer
@@ -203,7 +203,7 @@ python mirage_peer.py --scan --verbose
 
 You should see:
 ```
-🌟 Project Mirage - Windows Peer Agent
+Project Mirage - Windows Peer Agent
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Node name: windows-peer
 ✓ Platform: Windows 10
@@ -219,12 +219,12 @@ Both devices should discover each other within a few seconds. You'll see message
 
 **On Linux:**
 ```
-🔍 Discovered peer: windows-peer (windows) at 192.168.1.100:8444
+Discovered peer: windows-peer (windows) at 192.168.1.100:8444
 ```
 
 **On Windows:**
 ```
-🔍 Discovered host: linux-host (linux) at 192.168.1.50:8443
+ Discovered host: linux-host (linux) at 192.168.1.50:8443
 ```
 
 ---
@@ -461,6 +461,6 @@ Need help?
 
 ---
 
-**Happy Mirage-ing! 🌟**
+**Happy Mirage-ing! **
 
 *Last updated: 2025-11-05*
